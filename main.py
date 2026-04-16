@@ -5,8 +5,6 @@ from reservation import Reservation
 from hairdresser import Hairdresser
 from schedule import Schedule
 
-path = Path("clients.txt")
-
 schedule = Schedule()
 default_hairdresser = Hairdresser()
 
@@ -18,7 +16,6 @@ while toContinue == True:
     print("2) Zmień status wybranej rezerwacji")
     print("3) Wyświetl wszystkie rezerwacje")
     print("4) Usuń wybraną rezerwację")
-    print("5) Wczytaj rezerwacje z pliku")
 
     user_choice = int(input("Twój wybór: "))
 
@@ -49,12 +46,8 @@ while toContinue == True:
         schedule.add_to_schedule(new_reservation)
 
         if len(schedule.reservations) == 1:
-            content_to_save_in_file = new_reservation.describe_reservation()
-            path.write_text(content_to_save_in_file)
-        
-        else:
-            content_to_save_in_file += new_reservation.describe_reservation()
-            path.write_text(content_to_save_in_file)
+
+            schedule.add_to_schedule(new_reservation)
 
         print("\nDodano rezerwację!")
 
@@ -66,6 +59,7 @@ while toContinue == True:
         client_service_name_to_update = input(
             "Podaj nazwę usługi przypisaną do powyższego klienta, której status chcesz zaktualizować: "
         )
+
 
         for reservation in schedule.reservations:
             if (
@@ -108,14 +102,6 @@ while toContinue == True:
                 print("\nPomyślnie usunięte rezerwację")
             else:
                 print("Nieodnaleziono takiej rezerwacji")
-
-    elif user_choice == 5:
-
-        content_to_read_from_file = path.read_text()
-        lines = content_to_read_from_file.splitlines()
-
-        for line in lines:
-            print(line)
 
     else:
         toContinue = False
