@@ -15,7 +15,8 @@ while toContinue == True:
     print("1) Stwórz rezerwację")
     print("2) Zmień status wybranej rezerwacji")
     print("3) Wyświetl wszystkie rezerwacje")
-    print("4) Usuń wybraną rezerwację")
+    print("4) Wyświetl rezerwacje z wybranego dnia")
+    print("5) Usuń wybraną rezerwację")
 
     user_choice = int(input("Twój wybór: "))
 
@@ -44,10 +45,6 @@ while toContinue == True:
         )
 
         schedule.add_to_schedule(new_reservation)
-
-        if len(schedule.reservations) == 1:
-
-            schedule.add_to_schedule(new_reservation)
 
         print("\nDodano rezerwację!")
 
@@ -86,6 +83,15 @@ while toContinue == True:
 
     elif user_choice == 4:
 
+        date_to_check = input("Podaj konkretny dzien do sprawdzenia rezerwacji w formacie YYYY-MM-DD: ")
+
+        for reservation in schedule.reservations:
+            if (reservation.date_time.startswith(date_to_check)):
+                print(reservation.describe_reservation())
+
+
+    elif user_choice == 5:
+
         client_surname_to_delete = input(
             "Podaj nazwisko klienta, którego rezerwację chcesz usunąć: "
         )
@@ -99,9 +105,7 @@ while toContinue == True:
                 and reservation.service.name == client_service_to_delete
             ):
                 schedule.reservations.remove(reservation)
-                print("\nPomyślnie usunięte rezerwację")
-            else:
-                print("Nieodnaleziono takiej rezerwacji")
+                print("\nPomyślnie usunięto rezerwację")
 
     else:
         toContinue = False

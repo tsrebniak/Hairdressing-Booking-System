@@ -14,7 +14,7 @@ class Reservation:
 
     def describe_reservation(self):
         
-        about_reservation = (f"{self.client.name} {self.client.surname}\t{self.client.phone_number}\n{self.date_time}\t{self.status}\n\n")
+        about_reservation = (f"\n{self.client.name} {self.client.surname}\t{self.client.phone_number}\n{self.date_time}\t{self.status}\n")
 
         return about_reservation
     
