@@ -36,12 +36,16 @@ while toContinue == True:
 
         new_service = Service(service_name, service_duration_in_minutes, service_price)
 
-        reservation_date_time = input(
+        new_reservation_date_time = input(
             "Podaj datę w formacie RRRR-MM-DD HH:MM dla obecnej rezerwacji: "
         )
 
+        if schedule.is_time_slot_taken(new_reservation_date_time):
+            print("Ten termin jest zajęty")
+            continue
+
         new_reservation = Reservation(
-            new_client, default_hairdresser, new_service, reservation_date_time
+            new_client, default_hairdresser, new_service, new_reservation_date_time
         )
 
         schedule.add_to_schedule(new_reservation)
