@@ -60,7 +60,6 @@ while toContinue == True:
             "Podaj nazwę usługi przypisaną do powyższego klienta, której status chcesz zaktualizować: "
         )
 
-
         for reservation in schedule.reservations:
             if (
                 reservation.client.surname == client_surname_to_update
@@ -86,12 +85,13 @@ while toContinue == True:
 
     elif user_choice == 4:
 
-        date_to_check = input("Podaj konkretny dzien do sprawdzenia rezerwacji w formacie YYYY-MM-DD: ")
+        date_to_check = input(
+            "Podaj konkretny dzien do sprawdzenia rezerwacji w formacie YYYY-MM-DD: "
+        )
 
         for reservation in schedule.reservations:
-            if (reservation.date_time.startswith(date_to_check)):
+            if reservation.date_time.startswith(date_to_check):
                 print(reservation.describe_reservation())
-
 
     elif user_choice == 5:
 
@@ -102,13 +102,21 @@ while toContinue == True:
             "Podaj usługę powyższego klienta, którego rezerwację chcesz usunąć: "
         )
 
-        for reservation in schedule.reservations:
-            if (
+        before = len(schedule.reservations)
+
+        schedule.reservations = [
+            reservation
+            for reservation in schedule.reservations
+            if not (
                 reservation.client.surname == client_surname_to_delete
                 and reservation.service.name == client_service_to_delete
-            ):
-                schedule.reservations.remove(reservation)
-                print("\nPomyślnie usunięto rezerwację")
+            )
+        ]
+
+        if len(schedule.reservations) < before:
+            print("Usunięto rezerwację")
+        else:
+            print("Nie odnaleziono takiej rezerwacji")
 
     else:
         toContinue = False
