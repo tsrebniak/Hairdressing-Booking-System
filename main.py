@@ -1,4 +1,3 @@
-from pathlib import Path
 from client import Client
 from service import Service
 from reservation import Reservation
