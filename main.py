@@ -4,11 +4,19 @@ from reservation import Reservation
 from hairdresser import Hairdresser
 from schedule import Schedule
 
+RESERVATION_CREATE = 1
+RESERVATION_UPDATE = 2
+RESERVATION_LIST_ALL = 3
+RESERVATION_LIST_DAILY = 4
+RESERVATION_DELETE = 5
+
 schedule = Schedule()
+schedule.load_reservations()
+
 default_hairdresser = Hairdresser()
 
-toContinue = True
-while toContinue == True:
+to_continue = True
+while to_continue == True:
 
     print("\nWitaj w systemie rezerwacji fryzjerskich! Wybierz opcję: ")
     print("1) Stwórz rezerwację")
@@ -16,10 +24,11 @@ while toContinue == True:
     print("3) Wyświetl wszystkie rezerwacje")
     print("4) Wyświetl rezerwacje z wybranego dnia")
     print("5) Usuń wybraną rezerwację")
+    print("Podanie jakiejkolwiek innej wartości liczbowej spowoduje wyjście z programu")
 
     user_choice = int(input("Twój wybór: "))
 
-    if user_choice == 1:
+    if user_choice == RESERVATION_CREATE:
 
         client_name = input("Podaj imię klienta: ")
         client_surname = input("Podaj nazwisko klienta: ")
@@ -48,10 +57,11 @@ while toContinue == True:
         )
 
         schedule.add_to_schedule(new_reservation)
+        schedule.save_reservations()
 
         print("\nDodano rezerwację!")
 
-    elif user_choice == 2:
+    elif user_choice == RESERVATION_UPDATE:
 
         client_surname_to_update = input(
             "Podaj nazwisko klienta, którego rezerwację chcesz zaktualizować: "
@@ -72,18 +82,20 @@ while toContinue == True:
 
                 if client_status_to_update.lower() == "anulowano":
                     reservation.cancel_reservation()
+                    schedule.save_reservations()
                     print("Rezerwację anulowano!")
 
                 if client_status_to_update.lower() == "ukończono":
                     reservation.complete_reservation()
+                    schedule.save_reservations()
                     print("Rezerwację ukończono!")
 
-    elif user_choice == 3:
+    elif user_choice == RESERVATION_LIST_ALL:
 
         for reservation in schedule.reservations:
             print(reservation.describe_reservation())
 
-    elif user_choice == 4:
+    elif user_choice == RESERVATION_LIST_DAILY:
 
         date_to_check = input(
             "Podaj konkretny dzien do sprawdzenia rezerwacji w formacie YYYY-MM-DD: "
@@ -93,7 +105,7 @@ while toContinue == True:
             if reservation.date_time.startswith(date_to_check):
                 print(reservation.describe_reservation())
 
-    elif user_choice == 5:
+    elif user_choice == RESERVATION_DELETE:
 
         client_surname_to_delete = input(
             "Podaj nazwisko klienta, którego rezerwację chcesz usunąć: "
@@ -114,9 +126,10 @@ while toContinue == True:
         ]
 
         if len(schedule.reservations) < before:
-            print("Usunięto rezerwację")
+            print("\nUsunięto rezerwację")
+            schedule.save_reservations()
         else:
-            print("Nie odnaleziono takiej rezerwacji")
+            print("\nNie odnaleziono takiej rezerwacji")
 
     else:
-        toContinue = False
+        to_continue = False
