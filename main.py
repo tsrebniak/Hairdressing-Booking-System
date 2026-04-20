@@ -1,3 +1,4 @@
+from datetime import datetime
 from client import Client
 from service import Service
 from reservation import Reservation
@@ -26,7 +27,10 @@ while to_continue == True:
     print("5) Usuń wybraną rezerwację")
     print("Podanie jakiejkolwiek innej wartości liczbowej spowoduje wyjście z programu")
 
-    user_choice = int(input("Twój wybór: "))
+    try:
+        user_choice = int(input("Twój wybór: "))
+    except ValueError:
+        continue
 
     if user_choice == RESERVATION_CREATE:
 
